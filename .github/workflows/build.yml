@@ -42,7 +42,6 @@ jobs:
 
       - name: Build with Buildozer (verbose)
         id: build_step
-        continue-on-error: true
         run: |
           set +e
           yes | buildozer -v android debug > buildozer_full.log 2>&1
