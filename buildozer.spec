@@ -8,7 +8,7 @@ source.include_exts = py,png,jpg,jpeg,json,txt
 
 version = 1.0.0
 
-requirements = python3,kivy
+requirements = python3,kivy==2.2.0,pyjnius==1.5.0,android
 
 orientation = all
 fullscreen = 0
