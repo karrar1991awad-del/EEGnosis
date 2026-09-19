@@ -8,13 +8,13 @@ source.include_exts = py,png,jpg,jpeg,json,txt
 
 version = 1.0.0
 
-requirements = python3,kivy==2.2.1
+requirements = python3,kivy
 
 orientation = all
 fullscreen = 0
 
 android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
-android.api = 31
+android.api = 30
 android.minapi = 24
 android.ndk = 25b
 android.archs = arm64-v8a
@@ -23,7 +23,6 @@ android.release_artifact = apk
 android.debug_artifact = apk
 android.accept_sdk_license = True
 android.enable_androidx = True
-android.gradle_dependencies = 
 
 [buildozer]
 log_level = 2
