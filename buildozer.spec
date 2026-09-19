@@ -8,10 +8,7 @@ source.include_exts = py,png,jpg,jpeg,json,txt
 
 version = 1.0.0
 
-# ---- requirements ----
-# نجبر p4a على استخدام Python 3.11 (بدلاً من 3.14)
-# + kivy 2.1.0 (يستخدم pyjnius 1.6.1 المتوفر)
-requirements = python3==3.11.5,kivy==2.1.0
+requirements = python3,kivy==2.1.0
 
 orientation = all
 fullscreen = 0
