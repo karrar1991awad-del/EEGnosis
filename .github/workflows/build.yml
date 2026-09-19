@@ -8,7 +8,7 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-22.04
-    timeout-minutes: 120
+    timeout-minutes: 180
 
     steps:
       - name: Checkout code
@@ -32,6 +32,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install buildozer
           pip install "cython<3.0"
+          pip list
 
       - name: Cache Buildozer
         uses: actions/cache@v4
@@ -39,11 +40,37 @@ jobs:
           path: ~/.buildozer
           key: buildozer-${{ runner.os }}-${{ hashFiles('buildozer.spec') }}
 
-      - name: Build with Buildozer
+      - name: Build with Buildozer (verbose)
+        id: build_step
+        continue-on-error: true
         run: |
-          yes | buildozer -v android debug
+          set +e
+          yes | buildozer -v android debug > buildozer_full.log 2>&1
+          echo "BUILDOZER_EXIT_CODE=$?" >> $GITHUB_ENV
+          set -e
+
+      - name: Show tail of buildozer log
+        if: always()
+        run: |
+          echo "=============== LAST 300 LINES ==============="
+          tail -n 300 buildozer_full.log
+
+      - name: Search for critical errors in log
+        if: always()
+        run: |
+          echo "=============== ERROR LINES ==============="
+          grep -n -i -E "error:|ERROR:|failed|FAILED|Exception|Traceback|No such file|Could not find|not found|denied|Command failed" buildozer_full.log | tail -n 80 || true
+
+      - name: Upload full build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: buildozer-log
+          path: buildozer_full.log
+          retention-days: 30
 
       - name: Upload APK
+        if: env.BUILDOZER_EXIT_CODE == '0'
         uses: actions/upload-artifact@v4
         with:
           name: eegnosis-apk
